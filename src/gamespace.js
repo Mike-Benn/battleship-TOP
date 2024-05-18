@@ -20,12 +20,16 @@ function GameSpace(row , col) {
 
     const setOccupiedBy = (ship) => occupiedBy = ship;
 
+    const toggleSpaceActive = () => {
+        active = false;
+    }
     return {
         getLocation,
         getOccupiedBy,
         isSpaceActive,
         setLocation,
-        setOccupiedBy
+        setOccupiedBy,
+        toggleSpaceActive,
     }
 
 
