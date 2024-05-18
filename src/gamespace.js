@@ -1,15 +1,18 @@
 export { GameSpace };
 
 
-function GameSpace() {
+function GameSpace(row , col) {
 
-    let location = null;
+    let location = [row , col];
     let occupiedBy = null;
+    let active = true;
 
 
     const getLocation = () => location;
 
     const getOccupiedBy = () => occupiedBy;
+
+    const isSpaceActive = () => active;
 
     const setLocation = (row , col) => {
         location = [row , col];
@@ -20,6 +23,7 @@ function GameSpace() {
     return {
         getLocation,
         getOccupiedBy,
+        isSpaceActive,
         setLocation,
         setOccupiedBy
     }
