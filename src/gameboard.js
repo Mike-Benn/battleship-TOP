@@ -16,6 +16,13 @@ function GameBoard() {
         []
     ];
 
+    let shipCoordinates = new Map();
+    
+
+    const getBoard = () => board;
+
+    const getShipCoordinates = () => shipCoordinates;
+
     const resetBoard = () => {
         board = [
             [],
@@ -31,7 +38,8 @@ function GameBoard() {
         ];
     };
 
-    const getBoard = () => board;
+    const resetCoordinates = () => shipCoordinates = new Map();
+    
 
     const generateBoard = () => {
         resetBoard();
@@ -48,9 +56,24 @@ function GameBoard() {
         if (row < 0 || row > 9 || col < 0 || col > 9) {
             return "The coordinates entered are out of bounds, please choose a row and column value between 0 and 9."
         } else {
-            return board[row , col];
+            return board[row][col];
         }
     }
 
-    
+    const placeShip = (ship , row , col) => {
+        
+
+    }
+
+    return {
+        getBoard,
+        getShipCoordinates,
+        getSpaceAt,
+        resetBoard,
+        resetCoordinates,
+        generateBoard,
+        
+        
+
+    }
 }
