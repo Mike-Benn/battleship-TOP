@@ -2,7 +2,7 @@ export { Ship };
 
 function Ship(length) {
     const size = length;
-    const health = length;
+    let health = length;
     const sunkStatus = false;
 
     const getSize = () => size;
@@ -29,3 +29,6 @@ function Ship(length) {
     }
     
 }
+
+
+
