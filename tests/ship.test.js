@@ -22,5 +22,11 @@ test('Ship correctly takes one damage and health value is updated.' , () => {
     ship.hit();
     expect(ship.getHealth()).toBe(4);
 
+})
 
+test('Ship correctly takes one damage and sunk value is set to true.' , () => {
+    let ship = Ship(1);
+    ship.hit();
+    expect(ship.getHealth()).toBe(0);
+    expect(ship.isSunk()).toBe(true);
 })

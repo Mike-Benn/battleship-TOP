@@ -3,7 +3,7 @@ export { Ship };
 function Ship(length) {
     const size = length;
     let health = length;
-    const sunkStatus = false;
+    let sunkStatus = false;
 
     const getSize = () => size;
 
