@@ -22,6 +22,28 @@ test('Returns the orientation/direction of the ship.' , () => {
     expect(ship.getOrientation()).toBe("horizontal");
 })
 
+test('Returns the ship\'s location variable' , () => {
+    let ship = Ship(5 , "carrier");
+    expect(ship.getLocation()).toBe(null);
+})
+
+test('Sets the ship\'s location variable.' , () => {
+    let ship = Ship(5 , "carrier");
+    ship.setLocation([
+        [1 , 1],
+        [1 , 2],
+        [1 , 3],
+        [1 , 4],
+        [1 , 5]
+    ]);
+    expect(ship.getLocation()[0]).toStrictEqual([1 , 1]);
+    expect(ship.getLocation()[1]).toStrictEqual([1 , 2]);
+    expect(ship.getLocation()[2]).toStrictEqual([1 , 3]);
+    expect(ship.getLocation()[3]).toStrictEqual([1 , 4]);
+    expect(ship.getLocation()[4]).toStrictEqual([1 , 5]);
+
+});
+
 test('Toggles the orientation of the ship between horizontal and vertical.' , () => {
     let ship = Ship(5 , "carrier");
     ship.toggleOrientation();
