@@ -16,12 +16,27 @@ function GameBoard() {
         []
     ];
 
+    let inactiveSquares = {
+        0 : [],
+        1 : [],
+        2 : [],
+        3 : [],
+        4 : [],
+        5 : [],
+        6 : [],
+        7 : [],
+        8 : [],
+        9 : []
+    };
+
     let shipCoordinates = new Map();
     
 
     const getBoard = () => board;
 
     const getShipCoordinates = () => shipCoordinates;
+
+    const getInactiveSquares = () => inactiveSquares;
 
     const resetBoard = () => {
         board = [
@@ -40,6 +55,19 @@ function GameBoard() {
 
     const resetCoordinates = () => shipCoordinates = new Map();
     
+    const resetInactiveSquares = () => inactiveSquares = {
+        0 : [],
+        1 : [],
+        2 : [],
+        3 : [],
+        4 : [],
+        5 : [],
+        6 : [],
+        7 : [],
+        8 : [],
+        9 : [],
+
+    }
 
     const generateBoard = () => {
         resetBoard();
@@ -61,7 +89,7 @@ function GameBoard() {
     }
 
     const placeShip = (ship , row , col) => {
-        
+
 
     }
 
@@ -69,8 +97,10 @@ function GameBoard() {
         getBoard,
         getShipCoordinates,
         getSpaceAt,
+        getInactiveSquares,
         resetBoard,
         resetCoordinates,
+        resetInactiveSquares,
         generateBoard,
         
         

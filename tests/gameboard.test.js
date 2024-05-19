@@ -29,6 +29,26 @@ test('Returns a map of all current ship locations.' , () => {
 
 })
 
+test('Returns an object representing already played moves.' , () => {
+    let gameboard = GameBoard();
+    gameboard.getInactiveSquares()[0].push("test");
+    gameboard.getInactiveSquares()[9].push("test");
+
+    expect(gameboard.getInactiveSquares()[0][0]).toBe("test");
+    expect(gameboard.getInactiveSquares()[9][0]).toBe("test");
+})
+
+test('Reset inactive squares object to original state.' , () => {
+    let gameboard = GameBoard();
+    gameboard.getInactiveSquares()[0].push("test");
+    gameboard.getInactiveSquares()[9].push("test");
+
+    expect(gameboard.getInactiveSquares()[0][0]).toBe("test");
+    expect(gameboard.getInactiveSquares()[9][0]).toBe("test");
+    gameboard.resetInactiveSquares();
+    expect(gameboard.getInactiveSquares()[0]).toStrictEqual([]);
+})
+
 test('Resets the game board array.' , () => {
     let gameboard = GameBoard();
     gameboard.getBoard()[0][0] = 1;
