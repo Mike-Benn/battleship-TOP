@@ -29,14 +29,28 @@ function GameBoard() {
         9 : []
     };
 
-    let shipCoordinates = new Map();
+    let shipCoordinates = {
+        0 : [],
+        1 : [],
+        2 : [],
+        3 : [],
+        4 : [],
+        5 : [],
+        6 : [],
+        7 : [],
+        8 : [],
+        9 : [],
+    }
     
+    let sunkenShips = [];
 
     const getBoard = () => board;
 
     const getShipCoordinates = () => shipCoordinates;
 
     const getInactiveSquares = () => inactiveSquares;
+
+    const getSunkenShips = () => sunkenShips;
 
     const resetBoard = () => {
         board = [
@@ -53,7 +67,18 @@ function GameBoard() {
         ];
     };
 
-    const resetCoordinates = () => shipCoordinates = new Map();
+    const resetCoordinates = () => shipCoordinates = {
+        0 : [],
+        1 : [],
+        2 : [],
+        3 : [],
+        4 : [],
+        5 : [],
+        6 : [],
+        7 : [],
+        8 : [],
+        9 : [],
+    };
     
     const resetInactiveSquares = () => inactiveSquares = {
         0 : [],
@@ -88,9 +113,51 @@ function GameBoard() {
         }
     }
 
+    
+
     const placeShip = (ship , row , col) => {
+        
+        let orientation = ship.getOrientation();
 
+        if (orientation === "horizontal") {
+            for (let i = 0; i < ship.getSize(); i++) {
+                shipCoordinates[row].push(col);
+                getSpaceAt(row , col).setOccupiedBy(ship);
+                col++;
+            }
+        } else {
+            for (let i = 0; i < ship.getSize(); i++) {
+                shipCoordinates[row].push(col);
+                getSpaceAt(row , col).setOccupiedBy(ship);
+                row++;
 
+            }
+        }
+
+    }
+
+    const receiveAttack = (row , col) => {
+        let coordinatesToCheck = shipCoordinates[row];
+        
+        if (coordinatesToCheck.includes(col)) {
+            let ship = getSpaceAt(row , col).getOccupiedBy();
+            ship.hit();
+            if (ship.isSunk()) {
+                sunkenShips.push(ship);
+            }
+            // Might need to add statement that removes the ship from the gamespace where the hit took place
+            inactiveSquares[row].push(col);
+        } else {
+            inactiveSquares[row].push(col);
+        }
+    }
+
+    const isGameOver = () => {
+        if (sunkenShips.length === 4) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     return {
@@ -98,10 +165,14 @@ function GameBoard() {
         getShipCoordinates,
         getSpaceAt,
         getInactiveSquares,
+        getSunkenShips,
         resetBoard,
         resetCoordinates,
         resetInactiveSquares,
         generateBoard,
+        placeShip,
+        receiveAttack,
+        isGameOver
         
         
 
