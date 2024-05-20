@@ -13,13 +13,13 @@ function Player(playerName , type) {
 
     const getPlayerType = () => playerType;
 
-    const createBoard = () => {
+    const createGameBoard = () => {
         let freshGameBoard = GameBoard();
         freshGameBoard.generateBoard();
         gameboard = freshGameBoard;
     }
 
-    const resetBoard = () => {
+    const resetGameBoard = () => {
         gameboard = null;
     }
 
@@ -27,7 +27,7 @@ function Player(playerName , type) {
         getName,
         getGameBoard,
         getPlayerType,
-        createBoard,
-        resetBoard
+        createGameBoard,
+        resetGameBoard
     }
 }
