@@ -1,6 +1,5 @@
 import { GameBoard } from "../src/gameboard";
 import { Ship } from "../src/ship";
-import { GameSpace } from "../src/gamespace";
 
 //getBoard()
 
@@ -156,6 +155,7 @@ test('Places vertical ship on the board and updates appropriate variables' , () 
     
 
 })
+
 //receiveAttack()
 
 test('Receives attack from player and it\'s a hit.' , () => {
@@ -169,15 +169,11 @@ test('Receives attack from player and it\'s a hit.' , () => {
     gameboard.receiveAttack(1 , 1);
     let inactiveSquares = gameboard.getInactiveSquares();
 
-    
     expect(inactiveSquares[1][0]).toBe(1);
     expect(inactiveSquares[1][1]).toBe(undefined);
     expect(inactiveSquares[2][0]).toBe(undefined);
     expect(ship.getHealth()).toBe(0);
     expect(gameboard.getSunkenShips().length).toBe(1);
-
-    
-    
 
 })
 
@@ -212,4 +208,3 @@ test('Returns true or false whether or not all ships are sunk.' , () => {
     expect(gameboard.isGameOver()).toBe(true);
 
 })
-
