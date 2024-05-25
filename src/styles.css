@@ -1,0 +1,34 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+
+
+html , body , main {
+    height: 100%;
+    width: 100%;
+}
+
+.page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    
+    
+}
+
+.grid-container {
+    width: 30%;
+    height: auto;
+    display: grid;
+    grid-template-columns: repeat(10 , 1fr);
+
+}
+
+.grid-square {
+    border: 1px solid black;
+    aspect-ratio: 1;
+    
+}
