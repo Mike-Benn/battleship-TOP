@@ -15,7 +15,18 @@ function GameBoard() {
         [],
         []
     ];
-
+    let hitSquares = {
+        0 : [],
+        1 : [],
+        2 : [],
+        3 : [],
+        4 : [],
+        5 : [],
+        6 : [],
+        7 : [],
+        8 : [],
+        9 : [],
+    }
     let inactiveSquares = {
         0 : [],
         1 : [],
@@ -45,6 +56,8 @@ function GameBoard() {
     let sunkenShips = [];
 
     const getBoard = () => board;
+
+    const getHitSquares = () => hitSquares;
 
     const getShipCoordinates = () => shipCoordinates;
 
@@ -138,6 +151,8 @@ function GameBoard() {
 
     const receiveAttack = (row , col) => {
         let coordinatesToCheck = shipCoordinates[row];
+        col = parseInt(col);
+        
         
         if (coordinatesToCheck.includes(col)) {
             let ship = getSpaceAt(row , col).getOccupiedBy();
@@ -147,6 +162,7 @@ function GameBoard() {
             }
             // Might need to add statement that removes the ship from the gamespace where the hit took place
             inactiveSquares[row].push(col);
+            hitSquares[row].push(col);
         } else {
             inactiveSquares[row].push(col);
         }
@@ -164,6 +180,7 @@ function GameBoard() {
         getBoard,
         getShipCoordinates,
         getSpaceAt,
+        getHitSquares,
         getInactiveSquares,
         getSunkenShips,
         resetBoard,

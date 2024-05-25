@@ -21,6 +21,26 @@ test('Returns the game board array.' , () => {
 
 });
 
+//getHitSquares()
+
+test('Returns an object of all squares where a hit took place.' , () => {
+    let gameboard = GameBoard();
+    let testObject = {
+        0 : [],
+        1 : [],
+        2 : [],
+        3 : [],
+        4 : [],
+        5 : [],
+        6 : [],
+        7 : [],
+        8 : [],
+        9 : [],
+    };
+
+    expect(gameboard.getHitSquares()).toStrictEqual(testObject);
+})
+
 //getShipCoordinates()
 
 test('Returns an object of all current ship locations.' , () => {
