@@ -4,11 +4,15 @@ export { GameController };
 
 
 function GameController() {
-    let player1 = Player("Player" , "Human");
-    let player2 = Player("Computer" , "Computer");
+    let playerOne = Player("Player" , "Human");
+    let playerTwo = Player("CPU" , "Computer");
     let currentTurn = 0;
     let phase = "pregame";
 
+
+    const getPlayerOne = () => playerOne;
+
+    const getPlayerTwo = () => playerTwo;
 
     const getTurn = () => currentTurn;
 
@@ -27,6 +31,8 @@ function GameController() {
     }
 
     return {
+        getPlayerOne,
+        getPlayerTwo,
         getTurn,
         getPhase,
         switchTurn,
