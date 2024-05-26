@@ -4,7 +4,7 @@ export { ScreenController };
 
 function ScreenController() {
     let game = null;
-    let button = document.querySelector('.top-left');
+    let playAgainBtn = document.querySelector('.play-again-btn');
     // GAME LISTENERS
 
     function squareClickedListener(e) {
@@ -13,22 +13,20 @@ function ScreenController() {
         const col = location.charAt(1);
 
         if (game.getTurn() === 0) {
-            let board = game.getPlayerOne().getGameBoard();
+            let board = game.getPlayerTwo().getGameBoard();
             board.receiveAttack(row , col);
             game.switchTurn();
-            updateTurnDisplay();
             updateMainScreen();
         } else {
             let board = game.getPlayerTwo().getGameBoard();
             board.receiveAttack(row , col);
             game.switchTurn();
-            updateTurnDisplay();
             updateMainScreen();
 
         }
         
     }
-    
+
     
 
     const loadGame = () => {
@@ -59,24 +57,14 @@ function ScreenController() {
         playerTwoBoard.placeShip(playerTwoSubmarine , 6 , 0);
         playerTwoBoard.placeShip(playerTwoPatrol , 7 , 0);
 
+        updateMainScreen();
 
 
-
-    }
-
-    const updateTurnDisplay = () => {
-        let turnElement = document.querySelector('.turn-display');
-        if (game.getTurn() === 0) {
-            turnElement.textContent = "Player's Turn";
-        } else {
-            turnElement.textContent = "CPU's Turn";
-        }
-        
     }
 
     const updatePlayerBoard = () => {
-        let pageContainer = document.querySelector('.page-container');
-        let gridContainer = document.querySelector('.grid-container');
+        let holder = document.querySelector('.player-board');
+        let gridContainer = document.querySelector('.grid-container-player');
         let board = game.getPlayerOne().getGameBoard();
         for (let row = 0; row < 10; row++) {
             for (let col = 0; col < 10; col++) {
@@ -98,12 +86,12 @@ function ScreenController() {
                 }
             }
         }
-        pageContainer.appendChild(gridContainer);
+        holder.appendChild(gridContainer);
     }
 
     const updateComputerBoard = () => {
-        let pageContainer = document.querySelector('.page-container');
-        let gridContainer = document.querySelector('.grid-container');
+        let holder = document.querySelector('.computer-board');
+        let gridContainer = document.querySelector('.grid-container-computer');
         let board = game.getPlayerTwo().getGameBoard();
         for (let row = 0; row < 10; row++) {
             for (let col = 0; col < 10; col++) {
@@ -115,7 +103,6 @@ function ScreenController() {
                         gridSquare.style.backgroundColor = '#fa6a60';
                         gridContainer.appendChild(gridSquare);
                     } else {
-                        gridSquare.style.backgroundColor = '#98FB98';
                         gridSquare.addEventListener('click' , squareClickedListener);
                         gridContainer.appendChild(gridSquare);
                     }
@@ -128,49 +115,65 @@ function ScreenController() {
                 }   
             }
         }
-        pageContainer.appendChild(gridContainer);
+        holder.appendChild(gridContainer);
     }
 
-    /*
     const updateMainScreen = () => {
-        let pageContainer = document.querySelector('.page-container');
-        let gridContainer = document.querySelector('.grid-container');
-        while (gridContainer.firstChild) {
-            gridContainer.removeChild(gridContainer.firstChild);
+        let playerContainer = document.querySelector('.grid-container-player');
+        let computerContainer = document.querySelector('.grid-container-computer');
+        while (playerContainer.firstChild) {
+            playerContainer.removeChild(playerContainer.firstChild);
         }
-        let board;
-        if (game.getTurn() === 0) {
-            board = game.getPlayerOne().getGameBoard();
-        } else {
-            board = game.getPlayerTwo().getGameBoard();
+
+        while (computerContainer.firstChild) {
+            computerContainer.removeChild(computerContainer.firstChild);
         }
-        for (let row = 0; row < 10; row++) {
-            for (let col = 0; col < 10; col++) {
-                let gridSquare = document.createElement('div');
-                gridSquare.classList.add('grid-square');
-                gridSquare.dataset.value = '' + row + col;
-                if (board.getSpaceAt(row , col).getOccupiedBy() !== null) {
-                    if (board.getHitSquares()[row].includes(col)) {
-                        gridSquare.style.backgroundColor = '#fa6a60';
-                        gridContainer.appendChild(gridSquare);
-                    } else {
-                        gridSquare.style.backgroundColor = '#98FB98';
-                        gridSquare.addEventListener('click' , squareClickedListener);
-                        gridContainer.appendChild(gridSquare);
-                    }
-                } else if (board.getInactiveSquares()[row].includes(col)) {
-                    gridSquare.style.backgroundColor = 'black';
-                    gridContainer.appendChild(gridSquare);
-                } else {
-                    gridSquare.addEventListener('click' , squareClickedListener);
-                    gridContainer.appendChild(gridSquare);
-                }   
-            }
+        updatePlayerBoard();
+        updateComputerBoard();
+
+        gameOverCheck();
+
+        if (game.getTurn() === 1) {
+            computerTurn();
         }
-        pageContainer.appendChild(gridContainer);
-        
     }
-    */
+
+    const computerTurn = () => {
+        game.getPlayerOne().getGameBoard().randomPlay();
+        game.switchTurn();
+        updateMainScreen();
+    }
+
+    const gameOverCheck = () => {
+        if (game.getPlayerOne().getGameBoard().isGameOver()) {
+            gameOverPopup("The CPU");
+        } else if (game.getPlayerTwo().getGameBoard().isGameOver()) {
+            gameOverPopup("You");
+        }
+    }
+
+    const gameOverPopup = (winner) => {
+        let popup = document.querySelector('#popup');
+        let overlay = document.querySelector('#overlay');
+        let message = document.querySelector('.game-result');
+        message.textContent = `${winner} won!`; 
+        popup.classList.remove('hidden');
+        overlay.classList.remove('hidden');
+        popup.classList.add('visible');
+    }
+
+    function playAgainListener(e) {
+        let popup = document.querySelector('#popup');
+        let overlay = document.querySelector('#overlay');
+        popup.classList.remove('visible');
+        popup.classList.add('hidden');
+        overlay.classList.add('hidden');
+        loadGame();
+
+    }
+
+    playAgainBtn.addEventListener('click' , playAgainListener);
+
     return {
         loadGame,
         updateMainScreen,
