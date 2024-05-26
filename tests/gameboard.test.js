@@ -135,6 +135,7 @@ test('Generates a game board array of game space objects.' , () => {
 
     expect(gameboard.getBoard()[0][0].isSpaceActive()).toBe(true);
     expect(gameboard.getActiveSquares()[0]).toStrictEqual([0 , 0]);
+    expect(gameboard.getActiveSquares().length).toBe(100);
 })
 
 //getSpaceAt()
@@ -235,5 +236,16 @@ test('Returns true or false whether or not all ships are sunk.' , () => {
     expect(gameboard.isGameOver()).toBe(false);
     gameboard.getSunkenShips().push(1);
     expect(gameboard.isGameOver()).toBe(true);
+
+})
+
+//randomPlay() 
+
+test('Makes a random play, pulling the play from the active squares variable.' , () => {
+    let gameboard = GameBoard();
+    gameboard.generateBoard();
+    gameboard.randomPlay();
+
+    expect(gameboard.getActiveSquares().length).toBe(99);
 
 })

@@ -182,6 +182,14 @@ function GameBoard() {
         }
     }
 
+    const randomPlay = () => {
+        let max = activeSquares.length;
+        let randomNumber = Math.floor(Math.random() * max);
+        let play = activeSquares[randomNumber];
+        receiveAttack(play[0] , play[1]);
+        activeSquares.splice(randomNumber , 1);
+    }
+
     return {
         getBoard,
         getShipCoordinates,
@@ -196,7 +204,8 @@ function GameBoard() {
         generateBoard,
         placeShip,
         receiveAttack,
-        isGameOver
+        isGameOver,
+        randomPlay,
         
         
 
