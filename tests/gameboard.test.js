@@ -62,6 +62,14 @@ test('Returns an object of all current ship locations.' , () => {
 
 })
 
+//getActiveSquares()
+
+test('Returns an array of all active squares.' , () => {
+    let gameboard = GameBoard();
+    let testArray = [];
+    expect(gameboard.getActiveSquares()).toStrictEqual(testArray);
+})
+
 //getInactiveSquares()
 
 test('Returns an object representing already played moves.' , () => {
@@ -126,6 +134,7 @@ test('Generates a game board array of game space objects.' , () => {
     gameboard.generateBoard();
 
     expect(gameboard.getBoard()[0][0].isSpaceActive()).toBe(true);
+    expect(gameboard.getActiveSquares()[0]).toStrictEqual([0 , 0]);
 })
 
 //getSpaceAt()

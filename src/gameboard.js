@@ -40,6 +40,8 @@ function GameBoard() {
         9 : []
     };
 
+    let activeSquares = [];
+
     let shipCoordinates = {
         0 : [],
         1 : [],
@@ -60,6 +62,8 @@ function GameBoard() {
     const getHitSquares = () => hitSquares;
 
     const getShipCoordinates = () => shipCoordinates;
+
+    const getActiveSquares = () => activeSquares;
 
     const getInactiveSquares = () => inactiveSquares;
 
@@ -112,6 +116,8 @@ function GameBoard() {
         for (let row = 0; row < board.length; row++) {
             for (let col = 0; col < board.length; col++) {
                 let space = GameSpace(row , col);
+                let play = [row , col];
+                activeSquares.push(play);
                 board[row][col] = space;
 
             }
@@ -181,6 +187,7 @@ function GameBoard() {
         getShipCoordinates,
         getSpaceAt,
         getHitSquares,
+        getActiveSquares,
         getInactiveSquares,
         getSunkenShips,
         resetBoard,
