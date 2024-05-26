@@ -5,30 +5,45 @@
 
 
 
-html , body , main {
-    height: 100%;
-    width: 100%;
-}
-
 .page-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    
-    
+    justify-content: center;
+    gap: 25px;
+    margin-top: 1vw;
+
 }
 
-.grid-container {
-    width: 30%;
-    height: auto;
+.grid-container-holder {
+    display: flex;
+    gap: 40px;
+}
+
+.player-board , .computer-board {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.grid-container-player , .grid-container-computer {
     display: grid;
     grid-template-columns: repeat(10 , 1fr);
-
+    margin: 0;
+    padding: 0;
 }
 
 .grid-square {
+    width: 2.5vw;
+    height: auto;
     border: 1px solid black;
     aspect-ratio: 1;
-    
 }
+
+
+
+
+    
+
+
