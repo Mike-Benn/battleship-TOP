@@ -19,14 +19,28 @@
     transform: translate(-50% , -50%);
     width: 35vw;
     height: 45vh;
-    background-color: aquamarine;
     padding: 3vh;
     box-sizing: border-box;
     border-radius: 10px;
     background-color: rgb(238, 238, 238);
     z-index: 101;
     
+}
+
+#pregame {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50% , -50%);
+    width: 35vw;
+    height: 85vh;
+    box-sizing: border-box;
+    border-radius: 10px;
+    background-color: rgb(238, 238, 238);
+    z-index: 101;
     
+
+
 }
 
 .hidden {
@@ -43,6 +57,17 @@
 
 p {
     font-size: 2em;
+}
+
+.rotate-btn {
+    width: 9vw;
+    height: 7vh;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    background-color: black;
+    color: rgb(238, 238, 238);
 }
 
 .play-again-btn {
@@ -92,7 +117,13 @@ p {
     aspect-ratio: 1;
 }
 
+.computer-square {
+    transition: background-color 0.2s ease;
+}
 
+.computer-square:hover {
+    background-color: #bcbcbc;
+}
 
 
     
