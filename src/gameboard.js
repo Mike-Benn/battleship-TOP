@@ -57,6 +57,8 @@ function GameBoard() {
     
     let sunkenShips = [];
 
+    let shipList = [Ship(2 , "patrol") , Ship(3 , "submarine") , Ship(4 , "battleship") , Ship(5 , "carrier")];
+
     const getBoard = () => board;
 
     const getHitSquares = () => hitSquares;
@@ -68,6 +70,8 @@ function GameBoard() {
     const getInactiveSquares = () => inactiveSquares;
 
     const getSunkenShips = () => sunkenShips;
+
+    const getShipList = () => shipList;
 
     const resetBoard = () => {
         board = [
@@ -254,6 +258,7 @@ function GameBoard() {
         getActiveSquares,
         getInactiveSquares,
         getSunkenShips,
+        getShipList,
         resetBoard,
         resetCoordinates,
         resetInactiveSquares,

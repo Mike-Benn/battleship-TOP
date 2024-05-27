@@ -81,6 +81,19 @@ test('Returns an object representing already played moves.' , () => {
     expect(gameboard.getInactiveSquares()[9][0]).toBe("test");
 })
 
+//getShipList()
+
+test('Returns a list of all the possible ships to be placed' , () => {
+    let gameboard = GameBoard();
+    let shipList = gameboard.getShipList();
+    let test = [Ship(2 , "patrol") , Ship(3 , "submarine") , Ship(4 , "battleship") , Ship(5 , "carrier")];
+    expect(shipList[0].getType()).toBe("patrol");
+    expect(shipList[1].getType()).toBe("submarine");
+    expect(shipList[2].getType()).toBe("battleship");
+    expect(shipList[3].getType()).toBe("carrier");
+
+})
+
 //resetInactiveSquares()
 
 test('Reset inactive squares object to original state.' , () => {
