@@ -1,4 +1,5 @@
 import { Player } from "./player";
+import { GameBoard } from "./gameboard";
 export { GameController };
 
 
