@@ -153,39 +153,38 @@ function GameBoard() {
 
     }
 
-    function validatePlacement(length , array , board , orientation) {
-        let row = array[0];
-        let col = array[1];
+    const validatePlacement = (ship , coordinates) => {
+        let row = coordinates[0];
+        let col = coordinates[1];
 
-        if (orientation === 0) {
-            for (let i = 0; i < length; i++) {
-                if (validateSquare(row , col , board) === false) {
+        if (ship.getOrientation() === 0) {
+            for (let i = 0; i < ship.getSize(); i++) {
+                if (!validateSquare(row , col)) {
                     return false;
-                } 
+                }
                 col++;
             }
-            
             return true;
-        } else if (orientation === 1) {
-            for (let i = 0; i < length; i++) {
-                if (validateSquare(row , col , board) === false) {
+        } else if (ship.getOrientation === 1) {
+            for (let i = 0; i < ship.getSize(); i++) {
+                if (!validateSquare(row , col)) {
                     return false;
                 }
                 row++;
             }
-
             return true;
         }
     }
 
-    function validateSquare(row , col , board) {
+    const validateSquare = (row , col) => {
         if (row > 9 || col > 9) {
             return false;
-        } else if (board.getSpaceAt(row , col).getOccupiedBy() !== null) {
+        } else if (getSpaceAt(row , col).getOccupiedBy() !== null) {
             return false;
         }
-
+        return true;
     }
+    
 
     const getSpaceAt = (row , col) => {
         if (row < 0 || row > 9 || col < 0 || col > 9) {
@@ -265,6 +264,8 @@ function GameBoard() {
         resetCoordinates,
         resetInactiveSquares,
         generateBoard,
+        validatePlacement,
+        validateSquare,
         placeShip,
         receiveAttack,
         isGameOver,
@@ -274,3 +275,4 @@ function GameBoard() {
 
     }
 }
+
