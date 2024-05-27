@@ -7,6 +7,7 @@ export { GameController };
 function GameController() {
     let playerOne = Player("Player" , "Human");
     let playerTwo = Player("CPU" , "Computer");
+    let pregameBoard = GameBoard();
     let currentTurn = 0;
     let phase = "pregame";
 
@@ -14,6 +15,8 @@ function GameController() {
     const getPlayerOne = () => playerOne;
 
     const getPlayerTwo = () => playerTwo;
+    
+    const getPregameBoard = () => pregameBoard;
 
     const getTurn = () => currentTurn;
 
@@ -34,6 +37,7 @@ function GameController() {
     return {
         getPlayerOne,
         getPlayerTwo,
+        getPregameBoard,
         getTurn,
         getPhase,
         switchTurn,

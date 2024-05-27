@@ -1,6 +1,6 @@
 import { GameController } from "../src/gamecontroller";
 
-//getTurn() getPhase() getPlayerOne() getPlayerTwo()
+//getTurn() getPhase() getPlayerOne() getPlayerTwo() getPregameBoard()
 
 test('Testing the getters of the function.' , () => {
     let game = GameController();
@@ -8,6 +8,7 @@ test('Testing the getters of the function.' , () => {
     expect(game.getTurn()).toBe(0);
     expect(game.getPlayerOne().getName()).toBe("Player");
     expect(game.getPlayerTwo().getName()).toBe("CPU");
+    expect(game.getPregameBoard().getBoard().length).toBe(10);
 })
 
 //switchTurn()
