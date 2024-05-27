@@ -124,6 +124,69 @@ function GameBoard() {
         }
     }
 
+    const generateRandomBoard = () => {
+        resetBoard();
+        generateBoard();
+        const shipsArray = [["carrier" , 5] , ["battleship" , 4] , ["submarine" , 3] , ["patrol" , 2]]
+        const masterBoardCopy = [...activeSquares];
+        const validChecks = [...masterBoardCopy];
+
+        for (let i = 0; i < 4; i++) {
+            let ship = shipsArray[i];
+            let name = ship[0];
+            let length = ship[1];
+            let orientation = Math.floor(Math.random() * 2);
+            if (orientation === 0) {
+                while (true) {
+                    let index = Math.floor(Math.random() * validChecks.length);
+                    let coordinates = validChecks[index];
+                    
+                    break;
+
+                }
+            } else if (orientation === 1) {
+                while (true) {
+
+                }
+            }
+        }
+
+    }
+
+    function validatePlacement(length , array , board , orientation) {
+        let row = array[0];
+        let col = array[1];
+
+        if (orientation === 0) {
+            for (let i = 0; i < length; i++) {
+                if (validateSquare(row , col , board) === false) {
+                    return false;
+                } 
+                col++;
+            }
+            
+            return true;
+        } else if (orientation === 1) {
+            for (let i = 0; i < length; i++) {
+                if (validateSquare(row , col , board) === false) {
+                    return false;
+                }
+                row++;
+            }
+
+            return true;
+        }
+    }
+
+    function validateSquare(row , col , board) {
+        if (row > 9 || col > 9) {
+            return false;
+        } else if (board.getSpaceAt(row , col).getOccupiedBy() !== null) {
+            return false;
+        }
+
+    }
+
     const getSpaceAt = (row , col) => {
         if (row < 0 || row > 9 || col < 0 || col > 9) {
             return "The coordinates entered are out of bounds, please choose a row and column value between 0 and 9."
