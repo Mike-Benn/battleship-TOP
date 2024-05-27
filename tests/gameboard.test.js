@@ -249,3 +249,40 @@ test('Makes a random play, pulling the play from the active squares variable.' ,
     expect(gameboard.getActiveSquares().length).toBe(99);
 
 })
+
+//validateSquare()
+
+test('Returns a boolean based on if a gamespace is in bounds and unoccupied.' , () => {
+    let gameboard = GameBoard();
+    gameboard.generateBoard();
+    let ship = Ship(5 , "test");
+
+    expect(gameboard.validateSquare(0 , 0)).toBe(true);
+    gameboard.placeShip(ship , 0 , 0);
+    expect(gameboard.validateSquare(0 , 0)).toBe(false);
+    expect(gameboard.validateSquare(10 , 9)).toBe(false);
+    expect(gameboard.validateSquare(9 , 10)).toBe(false);
+
+})
+
+test('Returns a boolean based on if a set of gamespaces are all in bounds and unoccupied.' , () => {
+    let gameboard = GameBoard();
+    gameboard.generateBoard();
+    let ship = Ship(5 , "test");
+    
+    expect(gameboard.validatePlacement(ship , [0 , 0])).toBe(true);
+    expect(gameboard.validatePlacement(ship , [8 , 1])).toBe(true);
+    expect(gameboard.validatePlacement(ship , [1 , 8])).toBe(false);
+    expect(gameboard.validatePlacement(ship , [9 , 9])).toBe(false);
+    expect(gameboard.validatePlacement(ship , [3 , 3])).toBe(true);
+
+    gameboard.generateBoard();
+    ship.toggleOrientation();
+
+    expect(gameboard.validatePlacement(ship , [0 , 0])).toBe(true);
+    expect(gameboard.validatePlacement(ship , [8 , 1])).toBe(false);
+    expect(gameboard.validatePlacement(ship , [1 , 8])).toBe(true);
+    expect(gameboard.validatePlacement(ship , [9 , 9])).toBe(false);
+    expect(gameboard.validatePlacement(ship , [3 , 3])).toBe(true);
+    
+})

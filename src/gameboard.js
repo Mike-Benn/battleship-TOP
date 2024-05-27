@@ -165,7 +165,7 @@ function GameBoard() {
                 col++;
             }
             return true;
-        } else if (ship.getOrientation === 1) {
+        } else if (ship.getOrientation() === 1) {
             for (let i = 0; i < ship.getSize(); i++) {
                 if (!validateSquare(row , col)) {
                     return false;
@@ -200,7 +200,7 @@ function GameBoard() {
         
         let orientation = ship.getOrientation();
 
-        if (orientation === "horizontal") {
+        if (orientation === 0) {
             for (let i = 0; i < ship.getSize(); i++) {
                 shipCoordinates[row].push(col);
                 getSpaceAt(row , col).setOccupiedBy(ship);
