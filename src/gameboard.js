@@ -127,30 +127,24 @@ function GameBoard() {
     const generateRandomBoard = () => {
         resetBoard();
         generateBoard();
-        const shipsArray = [["carrier" , 5] , ["battleship" , 4] , ["submarine" , 3] , ["patrol" , 2]]
-        const masterBoardCopy = [...activeSquares];
-        const validChecks = [...masterBoardCopy];
-
-        for (let i = 0; i < 4; i++) {
+        let coordinateList = [...activeSquares];
+        const shipsArray = [Ship(5 , "carrier") , Ship(4 , "battleship") , Ship(3 , "submarine") , Ship(2 , "patrol")];
+        for (let i = 0; i < shipsArray.length; i++) {
             let ship = shipsArray[i];
-            let name = ship[0];
-            let length = ship[1];
-            let orientation = Math.floor(Math.random() * 2);
-            if (orientation === 0) {
-                while (true) {
-                    let index = Math.floor(Math.random() * validChecks.length);
-                    let coordinates = validChecks[index];
-                    
+            ship.randomOrientation();
+            while(true) {
+                let index = Math.floor(Math.random() * coordinateList.length);
+                let coordinate = coordinateList[index];
+                if (validatePlacement(ship , [coordinate[0] , coordinate[1]])) {
+                    placeShip(ship , coordinate[0] , coordinate[1]);
                     break;
-
-                }
-            } else if (orientation === 1) {
-                while (true) {
-
+                } else {
+                    coordinateList.splice(index , 1);
                 }
             }
-        }
+            coordinateList = [...activeSquares];
 
+        }
     }
 
     const validatePlacement = (ship , coordinates) => {
@@ -264,6 +258,7 @@ function GameBoard() {
         resetCoordinates,
         resetInactiveSquares,
         generateBoard,
+        generateRandomBoard,
         validatePlacement,
         validateSquare,
         placeShip,
