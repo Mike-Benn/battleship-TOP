@@ -19,7 +19,7 @@ test('Returns the type of the ship.' , () => {
 
 test('Returns the orientation/direction of the ship.' , () => {
     let ship = Ship(5 , "carrier");
-    expect(ship.getOrientation()).toBe("horizontal");
+    expect(ship.getOrientation()).toBe(0);
 })
 
 test('Returns the ship\'s location variable' , () => {
@@ -47,7 +47,7 @@ test('Sets the ship\'s location variable.' , () => {
 test('Toggles the orientation of the ship between horizontal and vertical.' , () => {
     let ship = Ship(5 , "carrier");
     ship.toggleOrientation();
-    expect(ship.getOrientation()).toBe("vertical");
+    expect(ship.getOrientation()).toBe(1);
 })
 
 test('Returns if a ship is sunk or not.' , () => {

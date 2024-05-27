@@ -5,7 +5,7 @@ function Ship(length , shipType) {
     const type = shipType;
     let health = length;
     let sunkStatus = false;
-    let orientation = "horizontal";
+    let orientation = 0;
     let location = null;
 
     const getSize = () => size;
@@ -21,13 +21,21 @@ function Ship(length , shipType) {
     const setLocation = (locationVal) => location = locationVal; 
 
     const toggleOrientation = () => {
-        if (orientation === "horizontal") {
-            orientation = "vertical";
+        if (orientation === 0) {
+            orientation = 1;
         } else {
-            orientation = "horizontal";
+            orientation = 0;
         }
     }
     
+    const randomOrientation = () => {
+        if (Math.floor(Math.random() * 2) === 0) {
+            orientation = 0;
+        } else {
+            orientation = 1;
+        }
+    }
+
     const isSunk = () => sunkStatus;
 
     const hit = () => {
@@ -48,6 +56,7 @@ function Ship(length , shipType) {
         getLocation,
         setLocation,
         toggleOrientation,
+        randomOrientation,
         isSunk,
         hit,
         
