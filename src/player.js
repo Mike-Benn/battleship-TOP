@@ -15,8 +15,14 @@ function Player(playerName , type) {
 
     const createGameBoard = () => {
         let freshGameBoard = GameBoard();
-        freshGameBoard.generateBoard();
-        gameboard = freshGameBoard;
+        if (type === "Computer") {
+            freshGameBoard.generateRandomBoard();
+            gameboard = freshGameBoard;
+        } else {
+            freshGameBoard.generateBoard();
+            gameboard = freshGameBoard;
+        }
+        
     }
 
     const resetGameBoard = () => {
