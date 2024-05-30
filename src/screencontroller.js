@@ -5,61 +5,107 @@ export { ScreenController };
 function ScreenController() {
     let game = null;
     let playAgainBtn = document.querySelector('.play-again-btn');
-    // GAME LISTENERS
-
-    function squareClickedListener(e) {
-        const location = e.target.dataset.value;
-        const row = location.charAt(0);
-        const col = location.charAt(1);
-
-        if (game.getTurn() === 0) {
-            let board = game.getPlayerTwo().getGameBoard();
-            board.receiveAttack(row , col);
-            game.switchTurn();
-            updateMainScreen();
-        } else {
-            let board = game.getPlayerTwo().getGameBoard();
-            board.receiveAttack(row , col);
-            game.switchTurn();
-            updateMainScreen();
-
-        }
-        
-    }
-
     
-
     const loadGame = () => {
         game = GameController();
         game.getPlayerOne().createGameBoard();
         game.getPlayerTwo().createGameBoard();
 
         let playerOneBoard = game.getPlayerOne().getGameBoard();
-        let playerTwoBoard = game.getPlayerTwo().getGameBoard();
 
         let playerOneCarrier = Ship(5 , "carrier");
         let playerOneBattleShip = Ship(4 , "battleship");
         let playerOneSubmarine = Ship(3 , "submarine");
         let playerOnePatrol = Ship(2 , "patrol");
 
-        let playerTwoCarrier = Ship(5 , "carrier");
-        let playerTwoBattleShip = Ship(4 , "battleship");
-        let playerTwoSubmarine = Ship(3 , "submarine");
-        let playerTwoPatrol = Ship(2 , "patrol");
-
         playerOneBoard.placeShip(playerOneCarrier , 0 , 0);
         playerOneBoard.placeShip(playerOneBattleShip , 1 , 0);
         playerOneBoard.placeShip(playerOneSubmarine , 2 , 0);
         playerOneBoard.placeShip(playerOnePatrol , 3 , 0);
 
-        playerTwoBoard.placeShip(playerTwoCarrier , 4 , 0);
-        playerTwoBoard.placeShip(playerTwoBattleShip , 5 , 0);
-        playerTwoBoard.placeShip(playerTwoSubmarine , 6 , 0);
-        playerTwoBoard.placeShip(playerTwoPatrol , 7 , 0);
+        
 
         updateMainScreen();
+        //pregamePopup();
 
 
+    }
+
+    function placeShipListener(e) {
+        let coordinates = e.target.dataset.value;
+        let row = parseInt(coordinates.charAt(0));
+        let col = parseInt(coordinates.charAt(1));
+        let board = game.getPregameBoard();
+        let shipList = board.getShipList();
+        let ship = shipList[shipList.length - 1];
+
+        if (board.validatePlacement(ship , [row , col])) {
+            board.placeShip(ship , row , col);
+            shipList.pop();
+            updatePregameBoard();
+        }
+
+    }
+
+    function validHighlight(headElement , row , col) {
+        let orientation = ship.getOrientation();
+        let row = parseInt(row);
+        let col = parseInt(col);
+        
+        if (orientation === 0) {
+            for (let i = 0; i < ship.getSize(); i++) {
+                headElement.style.backgroundColor = '#98fb98';
+                headElement = headElement.nextElementSibling;
+            }        
+        } else {
+            for (let i = 0; i < ship.getSize(); i++) {
+                headElement.style.backgroundColor = '#98fb98';
+                headElement = document.querySelector(`.pregame-grid :nth-child(${((row + i + 1) * 10) + col})`);
+            }
+        }
+    }
+
+//    function invalidHighlihgt
+
+    function validityHoverListener(e) {
+        let headElement = e.target;
+        let coordinates = headElement.dataset.value;
+        let board = game.getPregameBoard();
+        let ship = board.getShipList()[board.getShipList.length - 1];
+        let row = coordinates.charAt(0);
+        let col = coordinates.charAt(1);
+
+
+        if (board.validatePlacement(ship , row , col)) {
+            validHighlight(headElement , row , col);
+        } else {
+            invalidHighlight(headElement , row , col);
+        }
+
+        
+
+    }
+
+    const updatePregameBoard = () => {
+        let gridContainer = document.querySelector('.pregame-grid');
+        let board = game.getPregameBoard();
+        while (gridContainer.firstChild) {
+            gridContainer.removeChild(gridContainer.firstChild);
+        }
+        for (let row = 0; row < 10; row++) {
+            for(let col = 0; col < 10; col++) {
+                let pregameSquare = document.createElement('div');
+                pregameSquare.classList.add('pregame-square');
+                if (board.getSpaceAt(row , col).getOccupiedBy() !== null) {
+                    pregameSquare.style.backgroundColor = '#444444';
+                    gridContainer.appendChild(pregameSquare);
+                } else {
+                    pregameSquare.style.backgroundColor = '#ffffff';
+                    gridContainer.appendChild(pregameSquare)
+                }
+
+            }
+        }
     }
 
     const updatePlayerBoard = () => {
@@ -86,9 +132,9 @@ function ScreenController() {
                 }
             }
         }
-        holder.appendChild(gridContainer);
+        
     }
-
+    
     const updateComputerBoard = () => {
         let holder = document.querySelector('.computer-board');
         let gridContainer = document.querySelector('.grid-container-computer');
@@ -97,6 +143,7 @@ function ScreenController() {
             for (let col = 0; col < 10; col++) {
                 let gridSquare = document.createElement('div');
                 gridSquare.classList.add('grid-square');
+                gridSquare.classList.add('computer-square');
                 gridSquare.dataset.value = '' + row + col;
                 if (board.getSpaceAt(row , col).getOccupiedBy() !== null) {
                     if (board.getHitSquares()[row].includes(col)) {
@@ -115,7 +162,7 @@ function ScreenController() {
                 }   
             }
         }
-        holder.appendChild(gridContainer);
+        
     }
 
     const updateMainScreen = () => {
@@ -138,10 +185,17 @@ function ScreenController() {
         }
     }
 
+    
+
     const computerTurn = () => {
         game.getPlayerOne().getGameBoard().randomPlay();
         game.switchTurn();
         updateMainScreen();
+    }
+    const pregamePopup = () => {
+        let popup = document.querySelector('#pregame');
+        let overlay = document.querySelector('#overlay');
+        let pregameMessage = document.querySelector('.pregame-message');
     }
 
     const gameOverCheck = () => {
@@ -170,6 +224,24 @@ function ScreenController() {
         overlay.classList.add('hidden');
         loadGame();
 
+    }
+
+    function squareClickedListener(e) {
+        const location = e.target.dataset.value;
+        const row = location.charAt(0);
+        const col = location.charAt(1);
+
+        if (game.getTurn() === 0) {
+            let board = game.getPlayerTwo().getGameBoard();
+            board.receiveAttack(row , col);
+            game.switchTurn();
+            updateMainScreen();
+        } else {
+            let board = game.getPlayerTwo().getGameBoard();
+            board.receiveAttack(row , col);
+            game.switchTurn();
+            updateMainScreen();
+        }
     }
 
     playAgainBtn.addEventListener('click' , playAgainListener);
