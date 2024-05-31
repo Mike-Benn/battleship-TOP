@@ -103,7 +103,7 @@ p {
     gap: 10px;
 }
 
-.grid-container-player , .grid-container-computer {
+.grid-container-player , .grid-container-computer , .pregame-grid {
     display: grid;
     grid-template-columns: repeat(10 , 1fr);
     margin: 0;
@@ -112,9 +112,16 @@ p {
 
 .grid-square {
     width: 2.5vw;
-    height: auto;
+    
     border: 1px solid black;
     aspect-ratio: 1;
+}
+
+.pregame-square {
+    width: 1.5vw;
+    border: 1px solid black;
+    aspect-ratio: 1;
+    
 }
 
 .computer-square {
