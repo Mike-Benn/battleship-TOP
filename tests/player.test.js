@@ -24,6 +24,17 @@ test('Creates a game board and assigns it to the player.' , () => {
 
 })
 
+//setGameBoard()
+
+test('Sets a board to the player\'s gameboard.' , () => {
+    let testPlayer = Player("Test" , "Human");
+    expect(testPlayer.getGameBoard()).toBeNull();
+    let testBoard = GameBoard();
+    testPlayer.setGameBoard(testBoard);
+    expect(testPlayer.getGameBoard()).not.toBeNull();
+    
+})
+
 //resetBoard()
 
 test('Resets player game board back to it\'s original state when player was created' , () => {

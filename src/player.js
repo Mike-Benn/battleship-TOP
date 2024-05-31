@@ -13,6 +13,8 @@ function Player(playerName , type) {
 
     const getPlayerType = () => playerType;
 
+    const setGameBoard = (board) => gameboard = board;
+
     const createGameBoard = () => {
         let freshGameBoard = GameBoard();
         if (type === "Computer") {
@@ -33,6 +35,7 @@ function Player(playerName , type) {
         getName,
         getGameBoard,
         getPlayerType,
+        setGameBoard,
         createGameBoard,
         resetGameBoard
     }
