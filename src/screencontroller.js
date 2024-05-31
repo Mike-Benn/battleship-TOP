@@ -4,31 +4,32 @@ export { ScreenController };
 
 function ScreenController() {
     let game = null;
+    let highlightedSquares = [];
     let playAgainBtn = document.querySelector('.play-again-btn');
-    
+    let rotateBtn = document.querySelector('.rotate-btn');
+    let overlay = document.querySelector('#overlay');
+    let pregameMessage = document.querySelector('#pregame');
     const loadGame = () => {
         game = GameController();
         game.getPlayerOne().createGameBoard();
         game.getPlayerTwo().createGameBoard();
-
-        let playerOneBoard = game.getPlayerOne().getGameBoard();
-
-        let playerOneCarrier = Ship(5 , "carrier");
-        let playerOneBattleShip = Ship(4 , "battleship");
-        let playerOneSubmarine = Ship(3 , "submarine");
-        let playerOnePatrol = Ship(2 , "patrol");
-
-        playerOneBoard.placeShip(playerOneCarrier , 0 , 0);
-        playerOneBoard.placeShip(playerOneBattleShip , 1 , 0);
-        playerOneBoard.placeShip(playerOneSubmarine , 2 , 0);
-        playerOneBoard.placeShip(playerOnePatrol , 3 , 0);
-
-        
+        game.getPregameBoard().generateBoard();
+        overlay.classList.remove('hidden');
+        pregameMessage.classList.remove('hidden');
+        overlay.classList.add('visible');
+        pregameMessage.classList.add('visible');        
 
         updateMainScreen();
+        updatePregameBoard();
         //pregamePopup();
 
 
+    }
+
+    function rotateShipListener(e) {
+        let shipList = game.getPregameBoard().getShipList();
+        let ship = shipList[shipList.length - 1];
+        ship.toggleOrientation();
     }
 
     function placeShipListener(e) {
@@ -42,69 +43,135 @@ function ScreenController() {
         if (board.validatePlacement(ship , [row , col])) {
             board.placeShip(ship , row , col);
             shipList.pop();
+
             updatePregameBoard();
         }
 
     }
-
-    function validHighlight(headElement , row , col) {
-        let orientation = ship.getOrientation();
-        let row = parseInt(row);
-        let col = parseInt(col);
-        
-        if (orientation === 0) {
-            for (let i = 0; i < ship.getSize(); i++) {
-                headElement.style.backgroundColor = '#98fb98';
-                headElement = headElement.nextElementSibling;
-            }        
-        } else {
-            for (let i = 0; i < ship.getSize(); i++) {
-                headElement.style.backgroundColor = '#98fb98';
-                headElement = document.querySelector(`.pregame-grid :nth-child(${((row + i + 1) * 10) + col})`);
+    function resetHighlightListener(e) {
+        for (let i = 0; i < highlightedSquares.length; i++) {
+            let square = highlightedSquares[i];
+            let coordinates = square.dataset.value;
+            let row = coordinates.charAt(0);
+            let col = coordinates.charAt(1);
+            if (game.getPregameBoard().getSpaceAt(row , col).getOccupiedBy() === null) {
+                square.style.backgroundColor = '#ffffff';
+            } else {
+                square.style.backgroundColor = '#444444';
             }
         }
+        highlightedSquares = [];
     }
 
-//    function invalidHighlihgt
-
-    function validityHoverListener(e) {
-        let headElement = e.target;
-        let coordinates = headElement.dataset.value;
+    function validityHighlightListener(e) {
+        let element = e.target;
+        let coordinates = e.target.dataset.value;
+        let startingRow = parseInt(coordinates.charAt(0));
+        let startingCol = parseInt(coordinates.charAt(1));
         let board = game.getPregameBoard();
-        let ship = board.getShipList()[board.getShipList.length - 1];
-        let row = coordinates.charAt(0);
-        let col = coordinates.charAt(1);
-
-
-        if (board.validatePlacement(ship , row , col)) {
-            validHighlight(headElement , row , col);
+        let shipList = board.getShipList();
+        let ship = shipList[shipList.length - 1];
+        let shipSize = ship.getSize();
+        // If ship can be validly placed in the hovered over position
+        if (board.validatePlacement(ship , [startingRow , startingCol])) {
+            let row = startingRow;
+            let col = startingCol;
+            let space = board.getSpaceAt(row , col);
+            // If ship can be validly placed here and is facing horizontally
+            if (ship.getOrientation() === 0) {
+                for (let i = 0; i < shipSize; i++) {
+                    if (element) {
+                        element.style.backgroundColor = '#98fb98';
+                        highlightedSquares.push(element);
+                    } else {
+                        break;
+                    }
+                    col++;
+                    element = document.querySelector(`[data-value^="${row}${col}"]`);
+                }
+            // If ship can be validly placed here and is facing vertically
+            } else {
+                for (let i = 0; i < shipSize; i++) {
+                    if (element) {
+                        element.style.backgroundColor = '#98fb98';
+                        highlightedSquares.push(element);
+                    } else {
+                        break;
+                    }
+                    row++;
+                    element = document.querySelector(`[data-value^="${row}${col}"]`);
+                }
+            }
+        // If ship cannot be validly placed in the hovered over position    
         } else {
-            invalidHighlight(headElement , row , col);
-        }
+            let row = startingRow;
+            let col = startingCol;
+            let space = board.getSpaceAt(row , col);
+            // If ship cannot be validly placed here and is facing horizontally
+            
+            if (ship.getOrientation() === 0) {
+                for (let i = 0; i < shipSize; i++) {
+                    if (element) {
+                        element.style.backgroundColor = '#fa6a60';
+                        highlightedSquares.push(element);
+                    } else {
+                        break;
+                    }
+                    col++;
+                    element = document.querySelector(`[data-value^="${row}${col}"]`);
+                }
+            // If ship cannot be validly placed here and is facing vertically
+            } else {
+                for (let i = 0; i < shipSize; i++) {
+                    if (element) {
+                        element.style.backgroundColor = '#fa6a60';
+                        highlightedSquares.push(element);
+                    } else {
+                        break;
+                    }
+                    row++;
+                    element = document.querySelector(`[data-value^="${row}${col}"]`);
+                }
+            }
 
-        
+        }
 
     }
 
     const updatePregameBoard = () => {
-        let gridContainer = document.querySelector('.pregame-grid');
-        let board = game.getPregameBoard();
-        while (gridContainer.firstChild) {
-            gridContainer.removeChild(gridContainer.firstChild);
-        }
-        for (let row = 0; row < 10; row++) {
-            for(let col = 0; col < 10; col++) {
-                let pregameSquare = document.createElement('div');
-                pregameSquare.classList.add('pregame-square');
-                if (board.getSpaceAt(row , col).getOccupiedBy() !== null) {
-                    pregameSquare.style.backgroundColor = '#444444';
-                    gridContainer.appendChild(pregameSquare);
-                } else {
-                    pregameSquare.style.backgroundColor = '#ffffff';
-                    gridContainer.appendChild(pregameSquare)
-                }
-
+        if (game.getPregameBoard().getShipList().length !== 0) {
+            let gridContainer = document.querySelector('.pregame-grid');
+            let board = game.getPregameBoard();
+            while (gridContainer.firstChild) {
+                gridContainer.removeChild(gridContainer.firstChild);
             }
+            for (let row = 0; row < 10; row++) {
+                for(let col = 0; col < 10; col++) {
+                    let pregameSquare = document.createElement('div');
+                    pregameSquare.classList.add('pregame-square');
+                    pregameSquare.dataset.value = "" + row + col;
+                    if (board.getSpaceAt(row , col).getOccupiedBy() !== null) {
+                        pregameSquare.style.backgroundColor = '#444444';
+                        pregameSquare.addEventListener('mouseenter' , validityHighlightListener);
+                        pregameSquare.addEventListener('mouseleave' , resetHighlightListener);
+                        gridContainer.appendChild(pregameSquare);
+                    } else {
+                        pregameSquare.style.backgroundColor = '#ffffff';
+                        pregameSquare.addEventListener('click' , placeShipListener);
+                        pregameSquare.addEventListener('mouseenter' , validityHighlightListener);
+                        pregameSquare.addEventListener('mouseleave' , resetHighlightListener);
+                        gridContainer.appendChild(pregameSquare)
+                    }
+
+                }
+            }
+        } else {
+            overlay.classList.remove('visible');
+            pregameMessage.classList.remove('visible');
+            overlay.classList.add('hidden');
+            pregameMessage.classList.add('hidden');
+            game.getPlayerOne().setGameBoard(game.getPregameBoard());
+            updateMainScreen();
         }
     }
 
@@ -192,11 +259,6 @@ function ScreenController() {
         game.switchTurn();
         updateMainScreen();
     }
-    const pregamePopup = () => {
-        let popup = document.querySelector('#pregame');
-        let overlay = document.querySelector('#overlay');
-        let pregameMessage = document.querySelector('.pregame-message');
-    }
 
     const gameOverCheck = () => {
         if (game.getPlayerOne().getGameBoard().isGameOver()) {
@@ -245,6 +307,7 @@ function ScreenController() {
     }
 
     playAgainBtn.addEventListener('click' , playAgainListener);
+    rotateBtn.addEventListener('click' , rotateShipListener);
 
     return {
         loadGame,
