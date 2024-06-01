@@ -1,14 +1,21 @@
 import { GameController } from "./gamecontroller";
+import { ShipList } from "./shiplist";
 import { Ship } from "./ship";
 export { ScreenController };
 
 function ScreenController() {
     let game = null;
     let highlightedSquares = [];
+    let shipList = ShipList();
+
+
     let playAgainBtn = document.querySelector('.play-again-btn');
     let rotateBtn = document.querySelector('.rotate-btn');
     let overlay = document.querySelector('#overlay');
     let pregameMessage = document.querySelector('#pregame');
+
+
+
     const loadGame = () => {
         game = GameController();
         game.getPlayerOne().createGameBoard();
@@ -171,6 +178,7 @@ function ScreenController() {
             overlay.classList.add('hidden');
             pregameMessage.classList.add('hidden');
             game.getPlayerOne().setGameBoard(game.getPregameBoard());
+            game.startGame();
             updateMainScreen();
         }
     }
@@ -244,20 +252,50 @@ function ScreenController() {
         }
         updatePlayerBoard();
         updateComputerBoard();
-
+        //updateShipDisplay();
         gameOverCheck();
 
-        if (game.getTurn() === 1) {
+        if (game.getTurn() === 0) {
+            updateFadedEffect();
+        } else {
             computerTurn();
         }
     }
 
+    const updateShipDisplay = () => {
+        let shipDisplayHuman = document.querySelector('.ship-display-human');
+        let shipDisplayComputer = document.querySelector('.ship-display-computer');
+        
+        if (game.getTurn() === 0) {
+            let totalChildren = shipDisplayComputer.childElementCount;
+
+        } else {
+            let totalChildren = shipDisplayHuman.childElementCount;
+        }
+    }
+
+    function updateFadedEffect() {
+        let playerBoard = document.querySelector('.player-board');
+        let computerBoard = document.querySelector('.computer-board');
+        if (game.getPhase() === "live") {
+            if (game.getTurn() === 0) {
+                computerBoard.classList.remove('faded');
+                playerBoard.classList.add('faded');
+            } else {
+                playerBoard.classList.remove('faded');
+                computerBoard.classList.add('faded');
+            }
+        }
+    }
     
 
     const computerTurn = () => {
-        game.getPlayerOne().getGameBoard().randomPlay();
-        game.switchTurn();
-        updateMainScreen();
+        updateFadedEffect();
+        setTimeout(() => {
+            game.getPlayerOne().getGameBoard().randomPlay();
+            game.switchTurn();
+            updateMainScreen();
+        }, 800);
     }
 
     const gameOverCheck = () => {
