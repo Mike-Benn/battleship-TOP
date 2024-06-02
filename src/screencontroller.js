@@ -13,148 +13,11 @@ function ScreenController() {
   let overlay = document.querySelector("#overlay");
   let pregameMessage = document.querySelector("#pregame");
 
-  function playAgainListener(e) {
-    let popup = document.querySelector("#popup");
-    let overlay = document.querySelector("#overlay");
-    popup.classList.remove("visible");
-    overlay.classList.remove("visible");
-    popup.classList.add("hidden");
-    overlay.classList.add("hidden");
-    game = null;
-    highlightedSquares = [];
-    shipList = ShipList();
-    loadGame();
-    resetShipDisplay();
-  }
+  //  GUI Updaters and builders
 
-  const loadGame = () => {
-    game = GameController();
-    game.getPlayerOne().createGameBoard();
-    game.getPlayerTwo().createGameBoard();
-    game.getPregameBoard().generateBoard();
-    overlay.classList.remove("hidden");
-    pregameMessage.classList.remove("hidden");
-    overlay.classList.add("visible");
-    pregameMessage.classList.add("visible");
-
-    updateMainScreen();
-    updatePregameBoard();
-  };
-
-  function rotateShipListener(e) {
-    //let shipList = game.getPregameBoard().getShipList();
-    let ships = shipList.getShips();
-    let ship = ships[0];
-    ship.toggleOrientation();
-  }
-
-  function placeShipListener(e) {
-    let coordinates = e.target.dataset.value;
-    let row = parseInt(coordinates.charAt(0));
-    let col = parseInt(coordinates.charAt(1));
-    let board = game.getPregameBoard();
-    //let shipList = board.getShipList();
-    let ships = shipList.getShips();
-    let ship = ships[0];
-
-    if (board.validatePlacement(ship, [row, col])) {
-      board.placeShip(ship, row, col);
-      shipList.removeShip();
-
-      updatePregameBoard();
-    }
-  }
-  function resetHighlightListener(e) {
-    for (let i = 0; i < highlightedSquares.length; i++) {
-      let square = highlightedSquares[i];
-      let coordinates = square.dataset.value;
-      let row = coordinates.charAt(0);
-      let col = coordinates.charAt(1);
-      if (
-        game.getPregameBoard().getSpaceAt(row, col).getOccupiedBy() === null
-      ) {
-        square.style.backgroundColor = "#ffffff";
-      } else {
-        square.style.backgroundColor = "#444444";
-      }
-    }
-    highlightedSquares = [];
-  }
-
-  function validityHighlightListener(e) {
-    let element = e.target;
-    let coordinates = e.target.dataset.value;
-    let startingRow = parseInt(coordinates.charAt(0));
-    let startingCol = parseInt(coordinates.charAt(1));
-    let board = game.getPregameBoard();
-    //let shipList = board.getShipList();
-    let ships = shipList.getShips();
-    let ship = ships[0];
-    let shipSize = ship.getSize();
-    // If ship can be validly placed in the hovered over position
-    if (board.validatePlacement(ship, [startingRow, startingCol])) {
-      let row = startingRow;
-      let col = startingCol;
-      let space = board.getSpaceAt(row, col);
-      // If ship can be validly placed here and is facing horizontally
-      if (ship.getOrientation() === 0) {
-        for (let i = 0; i < shipSize; i++) {
-          if (element) {
-            element.style.backgroundColor = "#98fb98";
-            highlightedSquares.push(element);
-          } else {
-            break;
-          }
-          col++;
-          element = document.querySelector(`[data-value^="${row}${col}"]`);
-        }
-        // If ship can be validly placed here and is facing vertically
-      } else {
-        for (let i = 0; i < shipSize; i++) {
-          if (element) {
-            element.style.backgroundColor = "#98fb98";
-            highlightedSquares.push(element);
-          } else {
-            break;
-          }
-          row++;
-          element = document.querySelector(`[data-value^="${row}${col}"]`);
-        }
-      }
-      // If ship cannot be validly placed in the hovered over position
-    } else {
-      let row = startingRow;
-      let col = startingCol;
-      let space = board.getSpaceAt(row, col);
-      // If ship cannot be validly placed here and is facing horizontally
-
-      if (ship.getOrientation() === 0) {
-        for (let i = 0; i < shipSize; i++) {
-          if (element) {
-            element.style.backgroundColor = "#fa6a60";
-            highlightedSquares.push(element);
-          } else {
-            break;
-          }
-          col++;
-          element = document.querySelector(`[data-value^="${row}${col}"]`);
-        }
-        // If ship cannot be validly placed here and is facing vertically
-      } else {
-        for (let i = 0; i < shipSize; i++) {
-          if (element) {
-            element.style.backgroundColor = "#fa6a60";
-            highlightedSquares.push(element);
-          } else {
-            break;
-          }
-          row++;
-          element = document.querySelector(`[data-value^="${row}${col}"]`);
-        }
-      }
-    }
-  }
-
+  //  updatePregameBoard() updatePlayerBoard() updateComputerBoard()
+  //  Builds board object used to place ships by checking if a space is occupied and adding listeners and validators to account for potential valid placements
+  //  All three methods behave very similarly, differing mostly in the event listeners they add to their spaces
   const updatePregameBoard = () => {
     if (shipList.getShips().length !== 0) {
       let gridContainer = document.querySelector(".pregame-grid");
@@ -287,34 +150,7 @@ function ScreenController() {
     }
   };
 
-  const resetShipDisplay = () => {
-    let shipDisplayHuman = document.querySelector(".ship-display-human");
-    let shipDisplayComputer = document.querySelector(".ship-display-computer");
-    let ships = shipList.getShips();
-    while (shipDisplayHuman.firstChild) {
-      shipDisplayHuman.removeChild(shipDisplayHuman.firstChild);
-      shipDisplayComputer.removeChild(shipDisplayComputer.firstChild);
-    }
-    for (let i = 0; i < ships.length; i++) {
-      let ship = ships[i];
-      let shipSize = ship.getSize();
-      let humanShipContainer = document.createElement("div");
-      let computerShipContainer = document.createElement("div");
-      humanShipContainer.classList.add("ship-container");
-      computerShipContainer.classList.add("ship-container");
-      for (let j = 0; j < shipSize; j++) {
-        let humanShipHealth = document.createElement("div");
-        let computerShipHealth = document.createElement("div");
-        humanShipHealth.classList.add("ship-health");
-        computerShipHealth.classList.add("ship-health");
-        humanShipContainer.appendChild(humanShipHealth);
-        computerShipContainer.appendChild(computerShipHealth);
-      }
-      shipDisplayHuman.appendChild(humanShipContainer);
-      shipDisplayComputer.appendChild(computerShipContainer);
-    }
-  };
-
+  //  Pulls health values from board's ship list and updates ship health display next to appropriate board
   const updateShipDisplay = () => {
     let shipDisplayHuman = document.querySelector(".ship-display-human");
     let shipDisplayComputer = document.querySelector(".ship-display-computer");
@@ -373,6 +209,35 @@ function ScreenController() {
     }
   };
 
+  //  Resets health displays to their original state at the start of the game, used for repeat plays of the game
+  const resetShipDisplay = () => {
+    let shipDisplayHuman = document.querySelector(".ship-display-human");
+    let shipDisplayComputer = document.querySelector(".ship-display-computer");
+    let ships = shipList.getShips();
+    while (shipDisplayHuman.firstChild) {
+      shipDisplayHuman.removeChild(shipDisplayHuman.firstChild);
+      shipDisplayComputer.removeChild(shipDisplayComputer.firstChild);
+    }
+    for (let i = 0; i < ships.length; i++) {
+      let ship = ships[i];
+      let shipSize = ship.getSize();
+      let humanShipContainer = document.createElement("div");
+      let computerShipContainer = document.createElement("div");
+      humanShipContainer.classList.add("ship-container");
+      computerShipContainer.classList.add("ship-container");
+      for (let j = 0; j < shipSize; j++) {
+        let humanShipHealth = document.createElement("div");
+        let computerShipHealth = document.createElement("div");
+        humanShipHealth.classList.add("ship-health");
+        computerShipHealth.classList.add("ship-health");
+        humanShipContainer.appendChild(humanShipHealth);
+        computerShipContainer.appendChild(computerShipHealth);
+      }
+      shipDisplayHuman.appendChild(humanShipContainer);
+      shipDisplayComputer.appendChild(computerShipContainer);
+    }
+  };
+
   const toggleOverlay = () => {
     let playerOverlay = document.querySelector(".player-grid-overlay");
     let computerOverlay = document.querySelector(".computer-grid-overlay");
@@ -390,43 +255,152 @@ function ScreenController() {
     }
   };
 
+  //  Program runners
+
+  const setup = () => {
+    playAgainBtn.addEventListener("click", playAgainListener);
+    rotateBtn.addEventListener("click", rotateShipListener);
+  };
+
+  const loadGame = () => {
+    game = GameController();
+    game.getPlayerOne().createGameBoard();
+    game.getPlayerTwo().createGameBoard();
+    game.getPregameBoard().generateBoard();
+    overlay.classList.remove("hidden");
+    pregameMessage.classList.remove("hidden");
+    overlay.classList.add("visible");
+    pregameMessage.classList.add("visible");
+
+    updateMainScreen();
+    updatePregameBoard();
+  };
+
   const computerTurn = () => {
     toggleOverlay();
     setTimeout(() => {
       game.getPlayerOne().getGameBoard().randomPlay();
       game.switchTurn();
       updateMainScreen();
-    }, 8); //00);
+    }, 800);
   };
-  const isGameOver = () => {
-    if (
-      game.getPlayerOne().getGameBoard().isGameOver() ||
-      game.getPlayerTwo().getGameBoard().isGameOver()
-    ) {
-      return true;
+
+  //  Listeners and event handlers
+
+  function rotateShipListener(e) {
+    let ships = shipList.getShips();
+    let ship = ships[0];
+    ship.toggleOrientation();
+  }
+
+  function validityHighlightListener(e) {
+    let element = e.target;
+    let coordinates = e.target.dataset.value;
+    let startingRow = parseInt(coordinates.charAt(0));
+    let startingCol = parseInt(coordinates.charAt(1));
+    let board = game.getPregameBoard();
+    //let shipList = board.getShipList();
+    let ships = shipList.getShips();
+    let ship = ships[0];
+    let shipSize = ship.getSize();
+    // If ship can be validly placed in the hovered over position
+    if (board.validatePlacement(ship, [startingRow, startingCol])) {
+      let row = startingRow;
+      let col = startingCol;
+      let space = board.getSpaceAt(row, col);
+      // If ship can be validly placed here and is facing horizontally
+      if (ship.getOrientation() === 0) {
+        for (let i = 0; i < shipSize; i++) {
+          if (element) {
+            element.style.backgroundColor = "#98fb98";
+            highlightedSquares.push(element);
+          } else {
+            break;
+          }
+          col++;
+          element = document.querySelector(`[data-value^="${row}${col}"]`);
+        }
+        // If ship can be validly placed here and is facing vertically
+      } else {
+        for (let i = 0; i < shipSize; i++) {
+          if (element) {
+            element.style.backgroundColor = "#98fb98";
+            highlightedSquares.push(element);
+          } else {
+            break;
+          }
+          row++;
+          element = document.querySelector(`[data-value^="${row}${col}"]`);
+        }
+      }
+      // If ship cannot be validly placed in the hovered over position
     } else {
-      return false;
+      let row = startingRow;
+      let col = startingCol;
+      let space = board.getSpaceAt(row, col);
+      // If ship cannot be validly placed here and is facing horizontally
+
+      if (ship.getOrientation() === 0) {
+        for (let i = 0; i < shipSize; i++) {
+          if (element) {
+            element.style.backgroundColor = "#fa6a60";
+            highlightedSquares.push(element);
+          } else {
+            break;
+          }
+          col++;
+          element = document.querySelector(`[data-value^="${row}${col}"]`);
+        }
+        // If ship cannot be validly placed here and is facing vertically
+      } else {
+        for (let i = 0; i < shipSize; i++) {
+          if (element) {
+            element.style.backgroundColor = "#fa6a60";
+            highlightedSquares.push(element);
+          } else {
+            break;
+          }
+          row++;
+          element = document.querySelector(`[data-value^="${row}${col}"]`);
+        }
+      }
     }
-  };
+  }
 
-  const gameOverPopup = (winner) => {
-    let popup = document.querySelector("#popup");
-    let overlay = document.querySelector("#overlay");
-    let message = document.querySelector(".game-result");
-    message.textContent = `${winner} won!`;
-    popup.classList.remove("hidden");
-    overlay.classList.remove("hidden");
-    popup.classList.add("visible");
-  };
-
-  const gameOverHandler = () => {
-    if (game.getPlayerOne().getGameBoard().isGameOver()) {
-      gameOverPopup("The CPU");
-    } else if (game.getPlayerTwo().getGameBoard().isGameOver()) {
-      gameOverPopup("You");
+  function resetHighlightListener(e) {
+    for (let i = 0; i < highlightedSquares.length; i++) {
+      let square = highlightedSquares[i];
+      let coordinates = square.dataset.value;
+      let row = coordinates.charAt(0);
+      let col = coordinates.charAt(1);
+      if (
+        game.getPregameBoard().getSpaceAt(row, col).getOccupiedBy() === null
+      ) {
+        square.style.backgroundColor = "#ffffff";
+      } else {
+        square.style.backgroundColor = "#444444";
+      }
     }
-  };
+    highlightedSquares = [];
+  }
 
+  function placeShipListener(e) {
+    let coordinates = e.target.dataset.value;
+    let row = parseInt(coordinates.charAt(0));
+    let col = parseInt(coordinates.charAt(1));
+    let board = game.getPregameBoard();
+    let ships = shipList.getShips();
+    let ship = ships[0];
+
+    if (board.validatePlacement(ship, [row, col])) {
+      board.placeShip(ship, row, col);
+      shipList.removeShip();
+
+      updatePregameBoard();
+    }
+  }
+
+  //  Send's coordinates of square player clicks to CPU's gameboard which receives the attack
   function squareClickedListener(e) {
     const location = e.target.dataset.value;
     const row = location.charAt(0);
@@ -445,11 +419,52 @@ function ScreenController() {
     }
   }
 
-  playAgainBtn.addEventListener("click", playAgainListener);
-  rotateBtn.addEventListener("click", rotateShipListener);
+  const isGameOver = () => {
+    if (
+      game.getPlayerOne().getGameBoard().isGameOver() ||
+      game.getPlayerTwo().getGameBoard().isGameOver()
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const gameOverHandler = () => {
+    if (game.getPlayerOne().getGameBoard().isGameOver()) {
+      gameOverPopup("The CPU");
+    } else if (game.getPlayerTwo().getGameBoard().isGameOver()) {
+      gameOverPopup("You");
+    }
+  };
+
+  const gameOverPopup = (winner) => {
+    let popup = document.querySelector("#popup");
+    let overlay = document.querySelector("#overlay");
+    let message = document.querySelector(".game-result");
+    message.textContent = `${winner} won!`;
+    popup.classList.remove("hidden");
+    overlay.classList.remove("hidden");
+    popup.classList.add("visible");
+  };
+
+  function playAgainListener(e) {
+    let popup = document.querySelector("#popup");
+    let overlay = document.querySelector("#overlay");
+    popup.classList.remove("visible");
+    overlay.classList.remove("visible");
+    popup.classList.add("hidden");
+    overlay.classList.add("hidden");
+    game = null;
+    highlightedSquares = [];
+    shipList = ShipList();
+    loadGame();
+    resetShipDisplay();
+  }
 
   return {
     loadGame,
     updateMainScreen,
+    setup,
   };
 }
