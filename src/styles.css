@@ -1,8 +1,31 @@
+:root {
+    --primary-color: #EEEEEE;
+    --secondary-color: #222222;
+}
+
 * {
     margin: 0;
     padding: 0;
     font-family: Arial, Helvetica, sans-serif;
+    background-color: var(--primary-color);
 }
+
+h1 {
+    font-family: 'Anton', sans-serif;
+    
+}
+
+.computer-grid-overlay , .player-grid-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: none;
+    z-index: 100;
+    opacity: 0.8;
+}
+
 #overlay {
     position: fixed;
     top: 0;
@@ -22,7 +45,7 @@
     padding: 3vh;
     box-sizing: border-box;
     border-radius: 10px;
-    background-color: rgb(238, 238, 238);
+    background-color: var(--primary-color);
     z-index: 101;
     
 }
@@ -36,7 +59,7 @@
     height: 85vh;
     box-sizing: border-box;
     border-radius: 10px;
-    background-color: rgb(238, 238, 238);
+    background-color: var(--primary-color);
     z-index: 101;
     
 
@@ -46,6 +69,10 @@
 .hidden {
     display: none;
 
+}
+
+.faded {
+    opacity: 0.2;
 }
 
 .visible {
@@ -67,7 +94,7 @@ p {
     outline: none;
     border-radius: 10px;
     background-color: black;
-    color: rgb(238, 238, 238);
+    color: var(--primary-color);
 }
 
 .play-again-btn {
@@ -78,7 +105,7 @@ p {
     outline: none;
     border-radius: 10px;
     background-color: black;
-    color: rgb(238, 238, 238);
+    color: var(--primary-color);
 }
 
 .page-container {
@@ -96,7 +123,23 @@ p {
     gap: 40px;
 }
 
-.player-board , .computer-board {
+
+
+.computer-board , .player-board {
+    display: flex;
+    flex-direction: row;
+    gap: 2vw;
+    
+}
+
+.ship-display-computer , .ship-display-human {
+    display: flex;
+    flex-direction: column;
+    gap: 1vw;
+    align-self: center;
+}
+
+.board-holder {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -104,10 +147,29 @@ p {
 }
 
 .grid-container-player , .grid-container-computer , .pregame-grid {
+    position: relative;
     display: grid;
     grid-template-columns: repeat(10 , 1fr);
     margin: 0;
     padding: 0;
+}
+
+
+
+.ship-container {
+    display: flex;
+    gap: 4px;
+}
+
+.ship-health {
+    width: 1vw;
+    border: 1px solid black;
+    aspect-ratio: 1;   
+    background-color: var(--secondary-color);
+}
+
+.sunk {
+    background-color: var(--primary-color);
 }
 
 .grid-square {
