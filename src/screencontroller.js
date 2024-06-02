@@ -445,7 +445,6 @@ function ScreenController() {
     }
   }
 
-
   playAgainBtn.addEventListener("click", playAgainListener);
   rotateBtn.addEventListener("click", rotateShipListener);
 
