@@ -34,8 +34,9 @@ function ScreenController() {
     }
 
     function rotateShipListener(e) {
-        let shipList = game.getPregameBoard().getShipList();
-        let ship = shipList[shipList.length - 1];
+        //let shipList = game.getPregameBoard().getShipList();
+        let ships = shipList.getShips();
+        let ship = ships[ships.length - 1];
         ship.toggleOrientation();
     }
 
@@ -44,12 +45,13 @@ function ScreenController() {
         let row = parseInt(coordinates.charAt(0));
         let col = parseInt(coordinates.charAt(1));
         let board = game.getPregameBoard();
-        let shipList = board.getShipList();
-        let ship = shipList[shipList.length - 1];
+        //let shipList = board.getShipList();
+        let ships = shipList.getShips();
+        let ship = ships[ships.length - 1];
 
         if (board.validatePlacement(ship , [row , col])) {
             board.placeShip(ship , row , col);
-            shipList.pop();
+            shipList.removeShip();
 
             updatePregameBoard();
         }
@@ -76,8 +78,9 @@ function ScreenController() {
         let startingRow = parseInt(coordinates.charAt(0));
         let startingCol = parseInt(coordinates.charAt(1));
         let board = game.getPregameBoard();
-        let shipList = board.getShipList();
-        let ship = shipList[shipList.length - 1];
+        //let shipList = board.getShipList();
+        let ships = shipList.getShips();
+        let ship = ships[ships.length - 1];
         let shipSize = ship.getSize();
         // If ship can be validly placed in the hovered over position
         if (board.validatePlacement(ship , [startingRow , startingCol])) {
@@ -146,7 +149,7 @@ function ScreenController() {
     }
 
     const updatePregameBoard = () => {
-        if (game.getPregameBoard().getShipList().length !== 0) {
+        if (shipList.getShips().length !== 0) {
             let gridContainer = document.querySelector('.pregame-grid');
             let board = game.getPregameBoard();
             while (gridContainer.firstChild) {
