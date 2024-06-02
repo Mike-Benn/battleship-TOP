@@ -1,36 +1,31 @@
 export { GameSpace };
 
+function GameSpace(row, col) {
+  let location = [row, col];
+  let occupiedBy = null;
+  let active = true;
 
-function GameSpace(row , col) {
+  const getLocation = () => location;
 
-    let location = [row , col];
-    let occupiedBy = null;
-    let active = true;
+  const getOccupiedBy = () => occupiedBy;
 
+  const isSpaceActive = () => active;
 
-    const getLocation = () => location;
+  const setLocation = (row, col) => {
+    location = [row, col];
+  };
 
-    const getOccupiedBy = () => occupiedBy;
+  const setOccupiedBy = (ship) => (occupiedBy = ship);
 
-    const isSpaceActive = () => active;
-
-    const setLocation = (row , col) => {
-        location = [row , col];
-    }
-
-    const setOccupiedBy = (ship) => occupiedBy = ship;
-
-    const toggleSpaceActive = () => {
-        active = false;
-    }
-    return {
-        getLocation,
-        getOccupiedBy,
-        isSpaceActive,
-        setLocation,
-        setOccupiedBy,
-        toggleSpaceActive,
-    }
-
-
+  const toggleSpaceActive = () => {
+    active = false;
+  };
+  return {
+    getLocation,
+    getOccupiedBy,
+    isSpaceActive,
+    setLocation,
+    setOccupiedBy,
+    toggleSpaceActive,
+  };
 }
