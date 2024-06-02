@@ -16,6 +16,7 @@
 
 h1 {
     font-family: 'Anton', sans-serif;
+    font-size: 5vw;
 }
 
 p {
@@ -30,7 +31,7 @@ p {
     align-items: center;
     justify-content: center;
     gap: 25px;
-    margin-top: 1vw;
+    padding: 5vh;
 
 }
 
