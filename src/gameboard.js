@@ -48,11 +48,7 @@ function GameBoard() {
 
   let shipList = [];
 
-  const getBoard = () => board;
-
   const getHitSquares = () => hitSquares;
-
-  const getShipCoordinates = () => shipCoordinates;
 
   const getActiveSquares = () => activeSquares;
 
@@ -68,39 +64,11 @@ function GameBoard() {
     board = [[], [], [], [], [], [], [], [], [], []];
   };
 
-  const resetCoordinates = () =>
-    (shipCoordinates = {
-      0: [],
-      1: [],
-      2: [],
-      3: [],
-      4: [],
-      5: [],
-      6: [],
-      7: [],
-      8: [],
-      9: [],
-    });
-
-  const resetInactiveSquares = () =>
-    (inactiveSquares = {
-      0: [],
-      1: [],
-      2: [],
-      3: [],
-      4: [],
-      5: [],
-      6: [],
-      7: [],
-      8: [],
-      9: [],
-    });
-
   const generateBoard = () => {
     resetBoard();
     for (let row = 0; row < board.length; row++) {
       for (let col = 0; col < board.length; col++) {
-        let space = GameSpace(row, col);
+        let space = GameSpace();
         let play = [row, col];
         activeSquares.push(play);
         board[row][col] = space;
@@ -204,7 +172,6 @@ function GameBoard() {
       if (ship.isSunk()) {
         sunkenShips.push(ship);
       }
-      // Might need to add statement that removes the ship from the gamespace where the hit took place
       inactiveSquares[row].push(col);
       hitSquares[row].push(col);
     } else {
@@ -229,8 +196,6 @@ function GameBoard() {
   };
 
   return {
-    getBoard,
-    getShipCoordinates,
     getSpaceAt,
     getHitSquares,
     getActiveSquares,
@@ -239,8 +204,6 @@ function GameBoard() {
     getShipList,
     addShip,
     resetBoard,
-    resetCoordinates,
-    resetInactiveSquares,
     generateBoard,
     generateRandomBoard,
     validatePlacement,
