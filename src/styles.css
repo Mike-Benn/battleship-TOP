@@ -1,112 +1,28 @@
+/*   Variables   */
+
 :root {
     --primary-color: #EEEEEE;
     --secondary-color: #222222;
 }
 
+/*   General tags   */
+
 * {
     margin: 0;
-    padding: 0;
-    font-family: Arial, Helvetica, sans-serif;
+    padding: 0;   
     background-color: var(--primary-color);
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 h1 {
     font-family: 'Anton', sans-serif;
-    
-}
-
-.computer-grid-overlay , .player-grid-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    display: none;
-    z-index: 100;
-    opacity: 0.8;
-}
-
-#overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 100;
-}
-#popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50% , -50%);
-    width: 35vw;
-    height: 45vh;
-    padding: 3vh;
-    box-sizing: border-box;
-    border-radius: 10px;
-    background-color: var(--primary-color);
-    z-index: 101;
-    
-}
-
-#pregame {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50% , -50%);
-    width: 35vw;
-    height: 85vh;
-    box-sizing: border-box;
-    border-radius: 10px;
-    background-color: var(--primary-color);
-    z-index: 101;
-    
-
-
-}
-
-.hidden {
-    display: none;
-
-}
-
-.faded {
-    opacity: 0.2;
-}
-
-.visible {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
 }
 
 p {
     font-size: 2em;
 }
 
-.rotate-btn {
-    width: 9vw;
-    height: 7vh;
-    cursor: pointer;
-    border: none;
-    outline: none;
-    border-radius: 10px;
-    background-color: black;
-    color: var(--primary-color);
-}
-
-.play-again-btn {
-    width: 15vw;
-    height: 12vh;
-    cursor: pointer;
-    border: none;
-    outline: none;
-    border-radius: 10px;
-    background-color: black;
-    color: var(--primary-color);
-}
+/*   Containers   */
 
 .page-container {
     display: flex;
@@ -122,8 +38,6 @@ p {
     display: flex;
     gap: 40px;
 }
-
-
 
 .computer-board , .player-board {
     display: flex;
@@ -154,12 +68,36 @@ p {
     padding: 0;
 }
 
-
-
 .ship-container {
     display: flex;
     gap: 4px;
 }
+
+/*   Buttons   */  
+
+.rotate-btn {
+    width: 9vw;
+    height: 7vh;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    background-color: black;
+    color: var(--primary-color);
+}
+
+.play-again-btn {
+    width: 15vw;
+    height: 12vh;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    background-color: black;
+    color: var(--primary-color);
+}
+
+/*   Squares   */
 
 .ship-health {
     width: 1vw;
@@ -167,23 +105,17 @@ p {
     aspect-ratio: 1;   
     background-color: var(--secondary-color);
 }
-
-.sunk {
-    background-color: var(--primary-color);
-}
-
-.grid-square {
-    width: 2.5vw;
     
-    border: 1px solid black;
-    aspect-ratio: 1;
-}
-
 .pregame-square {
     width: 1.5vw;
     border: 1px solid black;
     aspect-ratio: 1;
-    
+}
+
+.grid-square {
+    width: 2.5vw;
+    border: 1px solid black;
+    aspect-ratio: 1;
 }
 
 .computer-square {
@@ -194,7 +126,73 @@ p {
     background-color: #bcbcbc;
 }
 
+/*   Popup menus   */
 
-    
+#popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50% , -50%);
+    width: 35vw;
+    height: 45vh;
+    padding: 3vh;
+    box-sizing: border-box;
+    border-radius: 10px;
+    background-color: var(--primary-color);
+    z-index: 101;  
+}
 
+#pregame {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50% , -50%);
+    width: 35vw;
+    height: 85vh;
+    box-sizing: border-box;
+    border-radius: 10px;
+    background-color: var(--primary-color);
+    z-index: 101;
+}
 
+/*   Overlays and visibility mutators   */
+
+.sunk {
+    background-color: var(--primary-color);
+}
+
+.hidden {
+    display: none;
+}
+
+.faded {
+    opacity: 0.2;
+}
+
+.visible {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+}
+
+.computer-grid-overlay , .player-grid-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: none;
+    z-index: 100;
+    opacity: 0.8;
+}
